@@ -8,7 +8,9 @@ README = open(os.path.join(here, 'README.md')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.md')).read()
 
 requires = [
-    'nose'
+    'nose',
+    'alembic',
+    'sqlalchemy'
 ]
 
 config = {
@@ -16,7 +18,7 @@ config = {
     'long_description': README + '\n\n' + CHANGES,
     'keywords': 'web postgis',
     'author': 'Eduardo F. Santos',
-    'url': 'www.lightbase.com.br',
+    'url': 'http://www.lightbase.com.br',
     'download_url': 'http://github.com/lightbase/LBGeo',
     'author_email': 'eduardo@eduardosan.com',
     'version': '0.1',
