@@ -8,13 +8,15 @@ import logging.config
 
 
 def load_config(environment='production.ini'):
-    here = os.path.abspath(os.path.dirname(__file__))
-    config_file = os.path.join(here, '../' + environment)
-
-    config.set_globals(environment)
+    """
+    Load configuration
+    :param environment: Configuration file name
+    """
+    config.environment = environment
+    config.set_globals()
 
     # Logging
-    logging.config.fileConfig(config_file)
+    logging.config.fileConfig(config.INI_FILE)
 
 
 class LBGeo(object):
@@ -32,4 +34,4 @@ class LBGeo(object):
 
         # SQLAlchemy
         self.engine = config.create_new_engine()
-        self.Session = config.create_scoped_session(self.engine)
+        self.session = config.create_scoped_session(self.engine)

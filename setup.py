@@ -10,7 +10,8 @@ CHANGES = open(os.path.join(here, 'CHANGES.md')).read()
 requires = [
     'nose',
     'alembic',
-    'sqlalchemy'
+    'sqlalchemy',
+    'psycopg2'
 ]
 
 config = {

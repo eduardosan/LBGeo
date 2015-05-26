@@ -9,14 +9,18 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.engine import create_engine
 
-def set_globals(environment='production.ini'):
+environment = 'production.ini'
+
+def set_globals():
+
+    config = ConfigParser.ConfigParser()
+    here = os.path.abspath(os.path.dirname(__file__))
+    config_file = os.path.join(here, '../../' + environment)
+    config.read(config_file)
 
     global INI_FILE
 
-    INI_FILE = environment
-
-    config = ConfigParser.ConfigParser()
-    config.read(INI_FILE)
+    INI_FILE = config_file
 
     global DB_URL
     global DB_NAME
