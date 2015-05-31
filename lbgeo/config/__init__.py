@@ -37,13 +37,13 @@ def set_globals():
 
     POOL_SIZE = os.environ.get('SQLALCHEMY_POOL_SIZE', None)
     if POOL_SIZE is None:
-        POOL_SIZE = int(config.get('alembic', 'sqlalchemy.pool_size'))
+        POOL_SIZE = int(config.get('lbgeo', 'sqlalchemy.pool_size'))
     else:
         POOL_SIZE = int(POOL_SIZE)
 
     MAX_OVERFLOW = os.environ.get('SQLALCHEMY_MAX_OVERFLOW', None)
     if MAX_OVERFLOW is None:
-        MAX_OVERFLOW = int(config.get('alembic', 'sqlalchemy.max_overflow'))
+        MAX_OVERFLOW = int(config.get('lbgeo', 'sqlalchemy.max_overflow'))
     else:
         MAX_OVERFLOW = int(MAX_OVERFLOW)
 

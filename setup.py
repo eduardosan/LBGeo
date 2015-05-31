@@ -11,7 +11,8 @@ requires = [
     'nose',
     'alembic',
     'sqlalchemy',
-    'psycopg2'
+    'psycopg2',
+    'geoalchemy2'
 ]
 
 config = {

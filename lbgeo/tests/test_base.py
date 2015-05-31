@@ -22,13 +22,30 @@ class TestBase(unittest.TestCase):
         Test database connection
         """
         db_name = config.DB_NAME
-        self.assertEqual(db_name, 'tests')
+        self.assertEqual(db_name, 'tests_lbgeo')
 
         conn = lbg.engine.connect()
         self.assertIsInstance(conn, Connection)
 
         ses = lbg.session.begin()
         self.assertIsInstance(ses, SessionTransaction)
+
+    def test_create_db(self):
+        """
+        Test metadata model loading
+        """
+        db_name = config.DB_NAME
+        self.assertEqual(db_name, 'tests_lbgeo')
+
+        conn = lbg.engine.connect()
+        self.assertIsInstance(conn, Connection)
+
+        result = conn.execute("""
+        SELECT name
+        FROM estados
+        """)
+
+        self.assertEqual(len(result.fetchall()), 0)
 
     def tearDown(self):
         """
