@@ -19,6 +19,14 @@ def setup_package():
     Setup test data for the package
     """
     Base.metadata.create_all(config.ENGINE)
+
+    # Load default data
+    here = os.path.abspath(os.path.dirname(__file__))
+    sql_file = os.path.join(here, '../../alembic/sql/estados.sql')
+    fd = open(sql_file, 'r')
+
+    connection = config.ENGINE.connect()
+    result = connection.execute(fd.read())
     pass
 
 
@@ -26,5 +34,10 @@ def teardown_package():
     """
     Remove test data
     """
+    connection = config.ENGINE.connect()
+    result = connection.execute("""
+    ALTER TABLE estados
+    ALTER COLUMN gid DROP DEFAULT
+    """)
     Base.metadata.drop_all(config.ENGINE)
     pass

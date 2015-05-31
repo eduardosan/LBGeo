@@ -45,7 +45,7 @@ class TestBase(unittest.TestCase):
         FROM estados
         """)
 
-        self.assertEqual(len(result.fetchall()), 0)
+        self.assertGreater(len(result.fetchall()), 0)
 
     def tearDown(self):
         """

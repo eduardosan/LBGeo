@@ -16,6 +16,7 @@ class Estado(Base):
     __tablename__ = 'estados'
     gid = Column(Integer, Sequence('estados_gid_pkey'), primary_key=True, nullable=False)
     name = Column(Unicode(80), nullable=True)
+    descriptio = Column(Unicode(80), nullable=True)
     timestamp = Column(Date, nullable=True)
     begin = Column(Date, nullable=True)
     end = Column(Date, nullable=True)
