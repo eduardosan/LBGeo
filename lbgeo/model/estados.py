@@ -118,7 +118,8 @@ class EstadoBase(object):
                 Estado.name,
                 Estado.descriptio,
                 Estado.timestamp,
-                func.ST_AsGeoJSON(Estado.geom).label('geom')
+                Estado.icon,
+                func.ST_AsGeoJSON(Estado.geom).label('geometry')
             )
         else:
             query = self.session.query(
@@ -126,17 +127,25 @@ class EstadoBase(object):
                 Estado.name,
                 Estado.descriptio,
                 Estado.timestamp,
-                func.ST_AsGeoJSON(Estado.geom).label('geom')
+                Estado.icon,
+                func.ST_AsGeoJSON(Estado.geom).label('geometry')
             ).limit(limit)
 
         saida = list()
         for row in query:
-            saida.append(dict(
-                gid=row.gid,
-                name=row.name,
-                descriptio=row.descriptio,
-                timestamp=row.timestamp,
-                geom=json.loads(row.geom)
-            ))
+            saida.append({
+                'type': 'Feature',
+                'id': row.gid,
+                'geometry': json.loads(row.geometry),
+                'properties': {
+                    'name': row.name,
+                    'description': row.descriptio,
+                    'timestamp': row.timestamp,
+                    'icon': row.icon
+                }
+            })
 
-        return saida
+        return {
+            'type': 'FeatureCollection',
+            'features': saida
+        }
