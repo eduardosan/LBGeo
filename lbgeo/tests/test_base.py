@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 from .. import LBGeo
-from . import lbg
 from .. import config
 from sqlalchemy.engine import Connection
 from sqlalchemy.orm.session import SessionTransaction
@@ -15,7 +14,8 @@ class TestBase(unittest.TestCase):
         """
         Start parameters
         """
-        self.geo = lbg
+        self.engine = config.ENGINE
+        self.session = config.create_scoped_session(self.engine)
 
     def test_connection(self):
         """
@@ -24,10 +24,10 @@ class TestBase(unittest.TestCase):
         db_name = config.DB_NAME
         self.assertEqual(db_name, 'tests_lbgeo')
 
-        conn = lbg.engine.connect()
+        conn = self.engine.connect()
         self.assertIsInstance(conn, Connection)
 
-        ses = lbg.session.begin()
+        ses = self.session.begin()
         self.assertIsInstance(ses, SessionTransaction)
 
     def test_create_db(self):
@@ -37,7 +37,7 @@ class TestBase(unittest.TestCase):
         db_name = config.DB_NAME
         self.assertEqual(db_name, 'tests_lbgeo')
 
-        conn = lbg.engine.connect()
+        conn = self.engine.connect()
         self.assertIsInstance(conn, Connection)
 
         result = conn.execute("""

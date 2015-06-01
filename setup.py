@@ -12,13 +12,20 @@ requires = [
     'alembic',
     'sqlalchemy',
     'psycopg2',
-    'geoalchemy2'
+    'geoalchemy2',
+    'pyramid'
 ]
 
 config = {
     'description': 'Geographic information for Lightbase',
     'long_description': README + '\n\n' + CHANGES,
     'keywords': 'web postgis',
+    'classifiers': [
+        "Programming Language :: Python",
+        "Framework :: Pyramid",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+        ],
     'author': 'Eduardo F. Santos',
     'url': 'http://www.lightbase.com.br',
     'download_url': 'http://github.com/lightbase/LBGeo',
@@ -32,7 +39,11 @@ config = {
     'scripts': [
     ],
     'test_suite': 'lbgeo',
-    'name': 'LBGeo'
+    'name': 'LBGeo',
+    'entry_points': """\
+      [paste.app_factory]
+      main = lbgeo:main
+      """,
 }
 
 setup(**config)

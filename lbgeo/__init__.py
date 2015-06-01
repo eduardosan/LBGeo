@@ -5,6 +5,7 @@ import os
 import config
 import logging
 import logging.config
+from pyramid.config import Configurator
 
 
 def load_config(environment='production.ini'):
@@ -35,3 +36,19 @@ class LBGeo(object):
         # SQLAlchemy
         self.engine = config.create_new_engine()
         self.session = config.create_scoped_session(self.engine)
+
+
+def main(global_config, **settings):
+    """ This function returns a Pyramid WSGI application.
+    """
+    ini_file = settings['environment'] + ".ini"
+    load_config(ini_file)
+
+    cfg = Configurator(settings=settings)
+
+    # Import routes
+    from lbgeo.config import routing
+    routing.make_routes(cfg)
+    cfg.scan()
+
+    return cfg.make_wsgi_app()

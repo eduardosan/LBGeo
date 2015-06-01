@@ -6,18 +6,15 @@ from .. import LBGeo
 from ..model import estados
 from ..model import Base
 
-# Set to test environment
-config.environment = 'test.ini'
-
-lbg = LBGeo(environment='test.ini')
-test_dir = os.path.dirname(os.path.realpath(__file__))
-log = logging.getLogger()
-
 
 def setup_package():
     """
     Setup test data for the package
     """
+    # Set to test environment
+    config.environment = 'test.ini'
+    lbg = LBGeo(environment='test.ini')
+
     Base.metadata.create_all(config.ENGINE)
 
     # Load default data
@@ -34,6 +31,10 @@ def teardown_package():
     """
     Remove test data
     """
+    # Set to test environment
+    config.environment = 'test.ini'
+    lbg = LBGeo(environment='test.ini')
+
     connection = config.ENGINE.connect()
     result = connection.execute("""
     ALTER TABLE estados

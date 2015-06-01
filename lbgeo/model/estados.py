@@ -1,11 +1,11 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 __author__ = 'eduardo'
-from sqlalchemy import ForeignKey
+import json
 from sqlalchemy.schema import Column, Sequence
-from sqlalchemy.types import String, Integer, Unicode, Date, Numeric
+from sqlalchemy.types import Integer, Unicode, Date, Numeric
+from sqlalchemy import func
 from geoalchemy2 import Geometry
-from .. import LBGeo
 from . import Base
 
 
@@ -94,3 +94,49 @@ class Estado(Base):
             self.draworder,
             self.icon
         )
+
+class EstadoBase(object):
+    """
+    Base de objetos do estado
+    """
+    def __init__(self, session):
+        """
+        Constructor
+        :param session: SQLAlchemy scoped session
+        """
+        self.session = session
+
+    def get_json(self, limit=None):
+        """
+        Get JSON with all data
+        :param limit: Max results
+        :return: JSON with data formatted
+        """
+        if limit is None:
+            query = self.session.query(
+                Estado.gid,
+                Estado.name,
+                Estado.descriptio,
+                Estado.timestamp,
+                func.ST_AsGeoJSON(Estado.geom).label('geom')
+            )
+        else:
+            query = self.session.query(
+                Estado.gid,
+                Estado.name,
+                Estado.descriptio,
+                Estado.timestamp,
+                func.ST_AsGeoJSON(Estado.geom).label('geom')
+            ).limit(limit)
+
+        saida = list()
+        for row in query:
+            saida.append(dict(
+                gid=row.gid,
+                name=row.name,
+                descriptio=row.descriptio,
+                timestamp=row.timestamp,
+                geom=json.loads(row.geom)
+            ))
+
+        return saida
