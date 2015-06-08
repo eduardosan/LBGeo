@@ -17,7 +17,7 @@ branch_labels = None
 depends_on = None
 
 from alembic import op
-from lbgeo.model import estados
+from lbgeo.model import estados, states, cities
 from lbgeo.model import Base
 import logging
 
