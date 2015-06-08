@@ -8,6 +8,7 @@ from sqlalchemy.types import Integer, Unicode, Float
 from sqlalchemy import func
 from geoalchemy2 import Geometry
 from . import Base
+from .states import State
 
 
 class Cities(Base):
@@ -89,6 +90,9 @@ class CitiesBase(object):
             Cities.id,
             Cities.name,
             Cities.state_id,
+            State.name.label('state_name'),
+            State.short_name.label('state_short_name'),
+            State.slug.label('state_slug'),
             Cities.slug,
             Cities.lat,
             Cities.lng,
@@ -97,7 +101,7 @@ class CitiesBase(object):
                 point,
                 Cities.__table__.c.geom
             ).label('distance')
-        ).order_by(
+        ).join(State).order_by(
             func.ST_Distance_Sphere(
                 point,
                 Cities.__table__.c.geom
