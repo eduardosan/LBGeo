@@ -3,7 +3,7 @@
 __author__ = 'eduardo'
 import os
 import tempfile
-import ConfigParser
+import configparser as ConfigParser
 from sqlalchemy.schema import MetaData
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session

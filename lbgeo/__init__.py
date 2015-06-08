@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'eduardo'
 import os
-import config
+from . import config
 import logging
 import logging.config
 from pyramid.config import Configurator
