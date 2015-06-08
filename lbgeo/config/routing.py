@@ -13,7 +13,11 @@ def make_routes(cfg):
     cfg.add_static_view('static', 'static', cache_max_age=3600)
     cfg.add_route('home', '/')
 
-    # Crime classification routes
+    # Get routes
     cfg.add_route('estados', 'estados')
     cfg.add_view(geo.GeoController, attr='estados', route_name='estados',
                  request_method='GET', renderer='json')
+
+    cfg.add_route('city', 'city')
+    cfg.add_view(geo.GeoController, attr='city', route_name='city',
+                 request_method='POST', renderer='json')

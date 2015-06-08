@@ -96,7 +96,7 @@ class CitiesBase(object):
             Cities.slug,
             Cities.lat,
             Cities.lng,
-            Cities.geom,
+            # Cities.geom,
             func.ST_Distance_Sphere(
                 point,
                 Cities.__table__.c.geom
