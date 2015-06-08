@@ -64,3 +64,44 @@ class Cities(Base):
             self.lng,
             self.geom
         )
+
+
+class CitiesBase(object):
+    """
+    Base de objetos do estado
+    """
+    def __init__(self, session):
+        """
+        Constructor
+        :param session: SQLAlchemy scoped session
+        """
+        self.session = session
+
+    def get_city(self, lat, lng):
+        """
+        Get nearby city for this lat and long
+        :param lat: Latitude
+        :param lng: Longitude
+        :return: City object
+        """
+        point = func.ST_MakePoint(lng, lat)
+        city = self.session.query(
+            Cities.id,
+            Cities.name,
+            Cities.state_id,
+            Cities.slug,
+            Cities.lat,
+            Cities.lng,
+            Cities.geom,
+            func.ST_Distance_Sphere(
+                point,
+                Cities.__table__.c.geom
+            ).label('distance')
+        ).order_by(
+            func.ST_Distance_Sphere(
+                point,
+                Cities.__table__.c.geom
+            )
+        ).limit(1).first()
+
+        return city
