@@ -5,6 +5,8 @@ import json
 from sqlalchemy import ForeignKey
 from sqlalchemy.schema import Column, Sequence
 from sqlalchemy.types import Integer, Unicode, Float
+from sqlalchemy import func
+from geoalchemy2 import Geometry
 from . import Base
 
 
@@ -20,18 +22,23 @@ class Cities(Base):
     lat = Column(Float, nullable=True)
     lng = Column(Float, nullable=True)
 
+    # Add geometry type
+    geom = Column(Geometry(), nullable=True)
+
     def __init__(self,
                  name,
                  slug,
-                 state_id,
-                 lat,
-                 lng):
+                 state_id=None,
+                 lat=None,
+                 lng=None,
+                 geom=None):
         """
         :param name: City name
         :param slug:  Slug
         :param state_id: State
         :param lat: Latitude (double)
         :param lng: Longitude (double)
+        :param geom: Geometry from latitude and longitude
         """
         self.name = name
         self.slug = slug
@@ -39,14 +46,21 @@ class Cities(Base):
         self.lat = lat
         self.lng = lng
 
+        # Geom point type
+        if geom is None:
+            self.geom = func.ST_MakePoint(self.lng, self.lat)
+        else:
+            self.geom = geom
+
     def __repr__(self):
         """
         List class attributes
         """
-        return "<State('%s, %s, %s, %s, %s')>" % (
+        return "<State('%s, %s, %s, %s, %s, %s')>" % (
             self.name,
             self.slug,
             self.state_id,
             self.lat,
-            self.lng
+            self.lng,
+            self.geom
         )
