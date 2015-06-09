@@ -1,9 +1,13 @@
 #!/usr/env python
 # -*- coding: utf-8 -*-
 __author__ = 'eduardo'
+import logging
 from ..model.estados import EstadoBase
 from ..model.cities import CitiesBase
 from .. import config
+
+
+log = logging.getLogger()
 
 class GeoController(object):
     """
@@ -37,7 +41,19 @@ class GeoController(object):
                  "lng": -47.8879054780313}
         :return: JSON with city data
         """
-        data = self.request.json_body
+        try:
+            data = self.request.json_body
+        except ValueError as e:
+            log.error("Error parsing JSON\n%s", e.message)
+
+            error_dict = {
+                "error_code": 99,
+                'error_message': "Invalid JSON"
+            }
+            self.request.response.status = 500
+
+            return error_dict
+
         if data is None:
             error_dict = {
                 "error_code": 99,
@@ -70,16 +86,16 @@ class GeoController(object):
 
         # Get a JSON friendly version
         output = {
-            "id": city.id,
-            "name": city.name,
-            "state_id": city.state_id,
+            "city_id": city.id,
+            "city_name": city.name,
+            "city_state_id": city.state_id,
             "state_name": city.state_name,
             "state_short_name": city.state_short_name,
             "state_slug": city.state_slug,
-            "slug": city.slug,
-            "lat": city.lat,
-            "lng": city.lng,
-            "distance": city.distance
+            "city_slug": city.slug,
+            "city_lat": city.lat,
+            "city_lng": city.lng,
+            "city_distance": city.distance
         }
 
         return output
