@@ -30,7 +30,7 @@ config = {
     'url': 'http://www.lightbase.com.br',
     'download_url': 'http://github.com/lightbase/LBGeo',
     'author_email': 'eduardo@eduardosan.com',
-    'version': '0.1',
+    'version': '0.5',
     'include_package_data': True,
     'zip_safe': False,
     'install_requires': requires,
